@@ -339,9 +339,30 @@ button {
   margin-bottom: 15px;
 }
 
-/* detail tipe rumah */
-.detail_tipe_rumah {
-  /* padding-left: 0; */
+/* blog page */
+.description-blog {
+  font-size: 14px;
+  font-weight: 400px !important;
+  text-align: justify !important;
+}
+
+.btn-readmore {
+  background-color: var(--primary-color) !important;
+}
+
+.text-latest-post {
+  font-size: 18px !important;
+  font-weight: 500;
+}
+
+.latest-blog-content {
+  cursor: pointer;
+}
+
+.latest-blog-items {
+  font-size: 14px !important;
+  color: black;
+  text-decoration: none;
 }
 
 /* footer */
@@ -418,10 +439,12 @@ footer {
   }
 
   .nav_menu_list {
-    height: 80%;
+    height: 70%;
     flex-direction: column;
     align-items: flex-start;
     margin: 0;
+    padding-top: 15px;
+
     justify-content: space-evenly;
   }
 

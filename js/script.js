@@ -197,14 +197,14 @@ function createHouseCard(house, index, isMobileView) {
           <div class="col-md-5 mb-3">
             <div class="card justify-content-center align-self-center p-3 tipe_rumah_item">
               <i class="fa fa-briefcase"></i>
-              <h3>${house.luas_bangunan}</h3>
+              <h3>${house.luas_bangunan}m²</h3>
               <p>Luas Bangunan</p>
             </div>
          </div>
           <div class="col-md-5 mb-3">
             <div class="card justify-content-center align-self-center p-3 tipe_rumah_item">
               <i class="fa fa-briefcase"></i>
-              <h3>${house.luas_tanah}</h3>
+              <h3>${house.luas_tanah}m²</h3>
               <p>Luas Tanah</p>
             </div>
          </div>
@@ -329,3 +329,123 @@ if (tipeRumahValue != null && tipeRumahValue != "") {
     document.getElementById("denah-rumah").src = filteredRumah.denah_rumah;
   }
 }
+
+// For Blog Load Data
+const blogData = [
+  {
+    id: 1,
+    title:
+      "Perumahan Dengan Hunian Nyaman dan Modern: Casa Verde di Myskill Residence",
+    date: "21 Maret 2024, 09:00 AM",
+    description:
+      "Dalam dunia properti, terutama di industri perumahan, kebutuhan akan hunian yang nyaman dan modern semakin menjadi prioritas bagi masyarakat urban. Salah satu perumahan yang menawarkan konsep tersebut adalah Myskill Residence dengan tipe hunian bernama Casa Verde...",
+    detail_blog: "./content/blog-1.html",
+    image_blog: "./img/house-1.png",
+  },
+
+  {
+    id: 2,
+    title:
+      "Menikmati Kemewahan Hidup di Sky Villa: Rumah Hunian Modern dengan Pemandangan Mengagumkan",
+    date: "22 Maret 2024, 08:00 AM",
+    description:
+      "Selamat datang di Sky Villa, rumah hunian modern yang menghadirkan kemewahan dan kenyamanan di tengah-tengah pemandangan yang menakjubkan. Ini bukan sekedar tempat tinggal, tetapi sebuah pengalaman hidup bergaya dan bersantai di atas langit biru",
+    detail_blog: "./content/blog-2.html",
+    image_blog: "./img/house-2.png",
+  },
+];
+
+function generateBlogHTML(blogPost) {
+  return `
+      <div class="card mb-4">
+        <div class="row">
+          <div class="col-md-4">
+            <img src="${blogPost.image_blog}" width="100%" height="100%"/>
+          </div>
+          <div class="col-md-8 p-4">
+            <div>
+              <h5>${blogPost.title}</h5>
+              <div class="blog-date d-flex mt-1">
+                <i class="fa fa-calendar me-2 mt-1"></i>
+                <p>${blogPost.date}</p>
+              </div>
+              <p class="description-blog mt-1">${blogPost.description}</p>
+              <a href="./detail_blog.html?id=${blogPost.id}" class="btn btn-sm btn-primary btn-readmore">
+                <i class="fa fa-book me-1"></i>
+                read more
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+  `;
+}
+
+function generateLatestBlogHTML(blogPost) {
+  return `
+  <a href="./detail_blog.html?id=${blogPost.id}" class="latest-blog-items">
+    <p>${blogPost.title}</p>
+      <div class="blog-date d-flex mt-1">
+       <i class="fa fa-calendar me-2 mt-1"></i>
+       <p>${blogPost.date}</p>
+      </div>
+      <hr>
+  </a>
+  `;
+}
+
+function renderBlogPosts(filterBlogData, isFilter) {
+  const blogContainer = document.getElementById("blogContainer");
+  const latestBlog = document.getElementById("latestBlogContent");
+
+  // render latest blog
+  if (latestBlog != null) {
+    // clear previous content
+    latestBlog.innerHTML = "";
+    // console.log("latestblog", latestBlog);
+    const lastTwoBlogPosts = blogData.slice(-2);
+    lastTwoBlogPosts.forEach(function (blogPost) {
+      latestBlog.innerHTML += generateLatestBlogHTML(blogPost);
+    });
+    // console.log(generateLatestBlogHTML);
+  }
+
+  if (blogContainer == null) {
+    return; // skipped
+  }
+
+  // clear previous content
+  blogContainer.innerHTML = "";
+
+  // check filtering data
+  if (isFilter) {
+    if (filterBlogData.length == 0) {
+      const emptyStateDiv = document.createElement("div");
+      emptyStateDiv.textContent = "No blog post avalable";
+      blogContainer.appendChild(emptyStateDiv);
+    }
+    filterBlogData.forEach(function (blogPost) {
+      blogContainer.innerHTML = generateBlogHTML(blogPost);
+    });
+  } else {
+    blogData.forEach(function (blogPost) {
+      blogContainer.innerHTML += generateBlogHTML(blogPost);
+    });
+  }
+}
+
+function searchBlog(input) {
+  const searchTerm = input.value.toLowerCase();
+  const filterBlogData = blogData.filter(function (blogPost) {
+    blogPost.title.toLocaleLowerCase().includes(searchTerm);
+  });
+
+  if (searchTerm != null && searchTerm != "") {
+    renderBlogPosts(filterBlogData, true);
+  } else {
+    renderBlogPosts([], false);
+  }
+}
+
+// render blog post when page loads
+window.onload = renderBlogPosts([], false);
